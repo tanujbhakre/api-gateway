@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
-	@RequestMapping(value = "/test", method =
+	@RequestMapping(value = "/unauthorized", method =
 			RequestMethod.GET)
 	@ResponseBody
 	public String test(){
 		return "This resource does not require authentication";
 	}
 	
-	@RequestMapping(value = "/authorized", method =
+	@RequestMapping(value = "/user", method =
 			RequestMethod.GET)
 	@ResponseBody
 	public String getAuthorizedResource(){

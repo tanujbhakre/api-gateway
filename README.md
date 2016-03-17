@@ -47,8 +47,8 @@ Following resources are available in application:
 
 Resource     | Request Type  | Description
 ------------ | ------------- | -------------
-/test        | GET           | Does not require authentication.
-/authorized  | GET           | Requires User role.
+/unauthorized| GET           | Does not require authentication.
+/user  		 | GET           | Requires User role.
 /admin       | GET           | Requires Admin role. 
 /api/login   | POST          | Expects username and password for authentication 
 
