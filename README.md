@@ -1,5 +1,7 @@
 # api-gateway
 
+## Synopsis
+
 This application implements API Gateway pattern. 
 
 Security in implemented with the help spring security. 
@@ -7,6 +9,14 @@ Security in implemented with the help spring security.
 Applications uses JWT to create token for authenticating and authorizing.
 
 Application manages user information in a state less manner without using sessions.
+
+## Motivation
+
+Motivation behind this project is to implement API Gateway pattern in a generic way.
+
+## Installation
+
+This project needs Maven and Java 1.7 and above.
 
 ## Below are the configured users:
 
@@ -21,7 +31,9 @@ Application manages user information in a state less manner without using sessio
 ## Authentication
 
 For authentication use /api/login POST request with body
-	{"username":"user","password":"123456"}/{"username":"admin","password":"123456"}
+	
+	For user role:{"username":"user","password":"123456"}
+	For admin role:{"username":"admin","password":"123456"}
 
 ## Token
 
