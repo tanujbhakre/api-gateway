@@ -19,9 +19,9 @@ If the user is authenticated in the response token is attached to header X-AUTH-
 
 For subsequent requests user should send the token as part of header with header value as X-AUTH-TOKEN
 
-Following resources are available 
+Following resources are available:
 
-/test (GET) - anybody can use it does not requires authentication
+/test (GET) - anybody can use it does not requires authentication.
 
 /authorized (GET) - authenticated user with User roles can access it.
 
