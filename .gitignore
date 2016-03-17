@@ -1,3 +1,6 @@
 /bin/
 /target/
 /WebContent/
+/.settings/
+/.classpath
+/.project
