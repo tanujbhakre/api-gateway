@@ -1,31 +1,37 @@
 # api-gateway
 
-This application implements API Gateway pattern. Adds security by using spring security. And uses JWT to create token.
+This application implements API Gateway pattern. 
 
-Configured users
+Security in implemented with the help spring security. 
 
-Username : user
-Password : 123456
-Roles: User
+Applications uses JWT to create token for authenticating and authorizing.
 
-Username : admin
-Password : 123456
-Roles: User, admin
+Application manages user information in a state less manner without using sessions.
+
+Below are the configured users:
+
+	Username : user
+	Password : 123456
+	Roles: User
+
+	Username : admin
+	Password : 123456
+	Roles: User, admin
 
 For authentication use /api/login POST request with body
-{"username":"USER_NAME","password":"USER_PASSWORD"}
+	{"username":"user","password":"123456"}/{"username":"admin","password":"123456"}
 
-If the user is authenticated in the response token is attached to header X-AUTH-TOKEN.
+If the user is authenticated in the response token is attached to header key X-AUTH-TOKEN.
 
-For subsequent requests user should send the token as part of header with header value as X-AUTH-TOKEN
+For subsequent requests token is expected as part of header with header key as X-AUTH-TOKEN.
 
-Following resources are available:
+Following resources are available in application:
 
-/test (GET) - anybody can use it does not requires authentication.
+	/test (GET) - anybody can use it does not requires authentication.
 
-/authorized (GET) - authenticated user with User roles can access it.
+	/authorized (GET) - authenticated user with User roles can access it.
 
-/admin (GET) - only user with Admin roles can access it. 
+	/admin (GET) - only user with Admin roles can access it. 
 
 
 
