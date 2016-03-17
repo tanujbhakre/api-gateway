@@ -3,7 +3,6 @@ package org.tanujb.gateway.security.service.impl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.tanujb.gateway.security.service.CryptoService;
@@ -21,7 +20,7 @@ public class TokenAuthenticationServiceImpl implements TokenAuthenticationServic
 
 	
 	public TokenAuthenticationServiceImpl() {
-		tokenHandler = new HMACCryptoService(KEY.getBytes());
+		tokenHandler = new JWTCryptoService(KEY.getBytes());
 	}
 
 	@Override

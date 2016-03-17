@@ -1,8 +1,6 @@
 package org.tanujb.gateway.security.service.impl;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.Key;
 
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -17,16 +15,15 @@ import org.jose4j.lang.JoseException;
 import org.tanujb.gateway.security.service.CryptoService;
 import org.tanujb.gateway.security.vo.User;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class JWTCryptoService implements CryptoService {
 
 	private static final String USER_KEY = "USER";
-	private final String secret;
+	private final byte[] secret;
 
-	JWTCryptoService(String secret) {
+	JWTCryptoService(byte[] secret) {
 		this.secret = secret;
 	}
 
@@ -51,13 +48,13 @@ public final class JWTCryptoService implements CryptoService {
 			// the subject/principal is whom the token is about
 			claims.setSubject("subject");
 			// additional claims/attributes about the subject can be added
-			claims.setClaim(USER_KEY, user);
+			claims.setClaim(USER_KEY, toJSON(user));
 			// A JWT is a JWS and/or a JWE with JSON claims as the payload.
 			JsonWebSignature jws = new JsonWebSignature();
 			// The payload of the JWS is JSON content of the JWT Claims
 			jws.setPayload(claims.toJson());
 
-			Key key = new HmacKey(secret.getBytes("UTF-8"));
+			Key key = new HmacKey(secret);
 			// The JWT is signed using the private key
 			jws.setKey(key);
 			// Set the signature algorithm on the JWT/JWS that will integrity
@@ -67,10 +64,7 @@ public final class JWTCryptoService implements CryptoService {
 			return jws.getCompactSerialization();
 		} catch (JoseException e) {
 			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
 		}
-
 	}
 
 	@Override
@@ -91,28 +85,46 @@ public final class JWTCryptoService implements CryptoService {
 					// to whom the JWT is intended for
 					.setExpectedAudience("Audience")
 					// verify the signature with the public key
-					.setVerificationKey(new HmacKey(secret.getBytes("UTF-8")))
+					.setVerificationKey(new HmacKey(secret))
 					// create the JwtConsumer instance
 					.build();
 
 			// Validate the JWT and process it to the Claims
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
 			String userJSON=jwtClaims.getClaimValue(USER_KEY, String.class);
-			user = new ObjectMapper().readValue(new ByteArrayInputStream(userJSON.getBytes()), User.class);
+			user = fromJSON(userJSON);
 		} catch (InvalidJwtException e) {
 			throw new RuntimeException(e);
 		} catch (MalformedClaimException e) {
 			throw new RuntimeException(e);
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e);
-		} catch (JsonParseException e) {
-			throw new RuntimeException(e);
-		} catch (JsonMappingException e) {
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		} 
 		return user;
+	}
+	
+	/**
+	 * Converts byte array representation of user to User object
+	 * @param userJSON JSON string representing user
+	 * @return User object constructed from JSON string 
+	 */
+	private User fromJSON(String userJSON) {
+		try {
+			return new ObjectMapper().readValue(userJSON, User.class);
+		} catch (IOException e) {
+			throw new IllegalStateException(e);
+		}
+	}
+	
+	/**
+	 * Converts User object to JSON string
+	 * @param user User to be converted to JSON
+	 * @return JSON string represnting user
+	 */
+	private String toJSON(User user) {
+		try {
+			return new ObjectMapper().writeValueAsString(user);
+		} catch (JsonProcessingException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 }

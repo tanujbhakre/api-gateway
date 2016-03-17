@@ -26,7 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		System.out.println("Inside SecurityConfig");
 		http
 		.exceptionHandling().and()
 		.anonymous().and()
@@ -34,8 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.headers().cacheControl().and()
 		.authorizeRequests()
 		//allow anonymous POSTs to login
-		.antMatchers(HttpMethod.POST, "/api/login").permitAll()
-		//allow anonymous POSTs to login
+		.antMatchers(HttpMethod.POST, "/api/login").permitAll()	
 		.antMatchers(HttpMethod.GET, "/test").permitAll()
 		//all other request need to be authenticated
 		.anyRequest().hasRole("USER").and()				

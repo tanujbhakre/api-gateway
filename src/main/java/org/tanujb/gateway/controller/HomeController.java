@@ -10,7 +10,14 @@ public class HomeController {
 	@RequestMapping(value = "/test", method =
 			RequestMethod.GET)
 	@ResponseBody
-	public String tet(){
-		return "running";
+	public String test(){
+		return "This resource does not require authentication";
+	}
+	
+	@RequestMapping(value = "/authorized", method =
+			RequestMethod.GET)
+	@ResponseBody
+	public String getAuthorizedResource(){
+		return "This resource requires authentication. User is authenticated to see this message.";
 	}
 }
