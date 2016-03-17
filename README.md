@@ -4,7 +4,7 @@
 
 This application implements API Gateway pattern. 
 
-Security in implemented with the help spring security. 
+Security is implemented with the help spring security. 
 
 Applications uses JWT to create token for authenticating and authorizing.
 
@@ -12,7 +12,7 @@ Application manages user information in a state less manner without using sessio
 
 ## Motivation
 
-Motivation behind this project is to implement API Gateway pattern in a generic way.
+Motivation behind this project is to implement API Gateway pattern in a generic way so that it can be adopted to projects with minimal changes.
 
 ## Installation
 
@@ -26,30 +26,30 @@ This project needs Maven and Java 1.7 and above.
 
 	Username : admin
 	Password : 123456
-	Roles: User, admin
+	Roles: User, Admin
 
 ## Authentication
 
 For authentication use /api/login POST request with body
 	
-	For user role:{"username":"user","password":"123456"}
-	For admin role:{"username":"admin","password":"123456"}
+	For user role  :{"username":"user","password":"123456"}
+	For admin role :{"username":"admin","password":"123456"}
 
 ## Token
 
-If the user is authenticated in the response token is attached to header key X-AUTH-TOKEN.
+If the user is authenticated in the response token is attached to header key **X-AUTH-TOKEN**.
 
-For subsequent requests token is expected as part of header with header key as X-AUTH-TOKEN.
+For subsequent requests token is expected as part of header with header key as **X-AUTH-TOKEN**.
 
 ## Resources
 
 Following resources are available in application:
 
-	/test (GET) - anybody can use it does not requires authentication.
-
-	/authorized (GET) - authenticated user with User roles can access it.
-
-	/admin (GET) - only user with Admin roles can access it. 
+Resource | Request Type | Description
+------------ | -------------
+/test | GET | Does not require authentication.
+/authorized | GET | Requires User role.
+/admin | GET | Requires Admin role. 
 
 
 
