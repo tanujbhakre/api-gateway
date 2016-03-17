@@ -30,7 +30,7 @@ This project needs Maven and Java 1.7 and above.
 
 ## Authentication
 
-For authentication use /api/login POST request with body
+For authentication use **/api/login** **POST** request with body:
 	
 	For user role  :{"username":"user","password":"123456"}
 	For admin role :{"username":"admin","password":"123456"}
@@ -50,6 +50,7 @@ Resource     | Request Type  | Description
 /test        | GET           | Does not require authentication.
 /authorized  | GET           | Requires User role.
 /admin       | GET           | Requires Admin role. 
+/api/login   | POST          | Expects username and password for authentication 
 
 
 
