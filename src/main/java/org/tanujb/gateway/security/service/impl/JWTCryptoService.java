@@ -1,5 +1,7 @@
 package org.tanujb.gateway.security.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.Key;
 
@@ -14,6 +16,10 @@ import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
 import org.tanujb.gateway.security.service.CryptoService;
 import org.tanujb.gateway.security.vo.User;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public final class JWTCryptoService implements CryptoService {
 
@@ -91,12 +97,19 @@ public final class JWTCryptoService implements CryptoService {
 
 			// Validate the JWT and process it to the Claims
 			JwtClaims jwtClaims = jwtConsumer.processToClaims(token);
-			user = jwtClaims.getClaimValue(USER_KEY, User.class);
+			String userJSON=jwtClaims.getClaimValue(USER_KEY, String.class);
+			user = new ObjectMapper().readValue(new ByteArrayInputStream(userJSON.getBytes()), User.class);
 		} catch (InvalidJwtException e) {
 			throw new RuntimeException(e);
 		} catch (MalformedClaimException e) {
 			throw new RuntimeException(e);
 		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		} catch (JsonParseException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		return user;

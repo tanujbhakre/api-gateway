@@ -19,7 +19,7 @@ public class TokenAuthenticationServiceImpl implements TokenAuthenticationServic
 	private static final String KEY = "xGfr#4@@6888KwetyComplct8Nobdfdujkogtr6";
 	private final CryptoService tokenHandler;
 
-	@Autowired
+	
 	public TokenAuthenticationServiceImpl() {
 		tokenHandler = new HMACCryptoService(KEY.getBytes());
 	}
