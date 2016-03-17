@@ -20,4 +20,11 @@ public class HomeController {
 	public String getAuthorizedResource(){
 		return "This resource requires authentication. User is authenticated to see this message.";
 	}
+	
+	@RequestMapping(value = "/admin", method =
+			RequestMethod.GET)
+	@ResponseBody
+	public String getAdminResource(){
+		return "This resource requires authentication. User is authenticated and has ADMIN role.";
+	}
 }

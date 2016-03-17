@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -28,7 +29,7 @@ class StatelessLoginFilter extends AbstractAuthenticationProcessingFilter {
 
 	protected StatelessLoginFilter(String urlMapping, TokenAuthenticationService tokenAuthenticationService,
 			UserDetailsService userDetailsService, AuthenticationManager authManager) {
-		super(new AntPathRequestMatcher(urlMapping));
+		super(new AntPathRequestMatcher(urlMapping,HttpMethod.POST.toString()));
 		this.userDetailsService = userDetailsService;
 		this.tokenAuthenticationService = tokenAuthenticationService;
 		setAuthenticationManager(authManager);

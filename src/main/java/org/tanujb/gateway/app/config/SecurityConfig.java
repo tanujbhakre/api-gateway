@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//allow anonymous POSTs to login
 		.antMatchers(HttpMethod.POST, "/api/login").permitAll()	
 		.antMatchers(HttpMethod.GET, "/test").permitAll()
+		.antMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
 		//all other request need to be authenticated
 		.anyRequest().hasRole("USER").and()				
 		// custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication

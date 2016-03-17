@@ -16,21 +16,26 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findByUsername(String username) {
 		User user = null;
-		if ("tbhakre".equals(username)) {
+		if ("user".equals(username)) {
 			user = new User();
-			user.setUsername("tbhakre");
+			user.setUsername("user");
 			user.setPassword("123456");
 			user.setExpires(Calendar.getInstance().getTimeInMillis() + 10000);
-			/**/UserAuthority u1=new UserAuthority(UserRole.USER.getRoleName());
-			UserAuthority u2=new UserAuthority(UserRole.USER.getRoleName());
+			UserAuthority u1=new UserAuthority(UserRole.USER.getRoleName());
+			Set<UserAuthority> authorities=new HashSet<UserAuthority>();
+			authorities.add(u1);
+			user.setAuthorities(authorities);
+		}else if ("admin".equals(username)) {
+			user = new User();
+			user.setUsername("admin");
+			user.setPassword("123456");
+			user.setExpires(Calendar.getInstance().getTimeInMillis() + 10000);
+			UserAuthority u1=new UserAuthority(UserRole.USER.getRoleName());
+			UserAuthority u2=new UserAuthority(UserRole.ADMIN.getRoleName());
 			Set<UserAuthority> authorities=new HashSet<UserAuthority>();
 			authorities.add(u1);
 			authorities.add(u2);
 			user.setAuthorities(authorities);
-			/*Set<UserRole> roles =new HashSet<UserRole>();
-			roles.add(UserRole.ADMIN);
-			roles.add(UserRole.USER);
-			user.setRoles(roles);*/
 		}
 		return user;
 	}
