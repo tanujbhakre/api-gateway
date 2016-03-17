@@ -45,11 +45,11 @@ For subsequent requests token is expected as part of header with header key as *
 
 Following resources are available in application:
 
-Resource | Request Type | Description
------------- | -------------
-/test | GET | Does not require authentication.
-/authorized | GET | Requires User role.
-/admin | GET | Requires Admin role. 
+Resource     | Request Type  | Description
+------------ | ------------- | -------------
+/test        | GET           | Does not require authentication.
+/authorized  | GET           | Requires User role.
+/admin       | GET           | Requires Admin role. 
 
 
 
