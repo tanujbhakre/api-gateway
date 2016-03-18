@@ -8,6 +8,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Represents user of the application
+ * 
+ * @author tbhakre
+ *
+ */
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -77,9 +83,9 @@ public class User implements UserDetails {
 	public Set<UserAuthority> getAuthorities() {
 		return authorities;
 	}
-	
+
 	public void setAuthorities(Set<UserAuthority> authorities) {
-		this.authorities=authorities;
+		this.authorities = authorities;
 	}
 
 	@Override

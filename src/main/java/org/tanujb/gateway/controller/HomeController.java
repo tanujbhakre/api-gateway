@@ -5,8 +5,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+/**
+ * Resources present in the application
+ * @author tbhakre
+ *
+ */
+
 @Controller
 public class HomeController {
+	
 	@RequestMapping(value = "/unauthorized", method =
 			RequestMethod.GET)
 	@ResponseBody

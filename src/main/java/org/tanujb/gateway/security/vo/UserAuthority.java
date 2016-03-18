@@ -1,26 +1,25 @@
 package org.tanujb.gateway.security.vo;
 
-
-
 import org.springframework.security.core.GrantedAuthority;
 
 /**
  * Authorities granted to user
+ * 
  * @author tbhakre
  *
  */
 public class UserAuthority implements GrantedAuthority {
 
-
 	private static final long serialVersionUID = 1L;
 	private String authority;
 
-	public UserAuthority(){}
-	
-	public UserAuthority(String authority){
-		this.authority=authority;
+	public UserAuthority() {
 	}
-	
+
+	public UserAuthority(String authority) {
+		this.authority = authority;
+	}
+
 	@Override
 	public String getAuthority() {
 		return authority;
@@ -36,7 +35,8 @@ public class UserAuthority implements GrantedAuthority {
 			return false;
 
 		UserAuthority ua = (UserAuthority) obj;
-		return ua.getAuthority() == this.getAuthority() || ua.getAuthority().equals(this.getAuthority());
+		return ua.getAuthority() == this.getAuthority()
+				|| ua.getAuthority().equals(this.getAuthority());
 	}
 
 	@Override

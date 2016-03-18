@@ -13,7 +13,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.tanujb.gateway.security.service.TokenAuthenticationService;
 import org.tanujb.gateway.security.service.impl.UserDetailsService;
 
-
+/**
+ * Contains all the spring security related configurations
+ * 
+ * @author tbhakre
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -23,28 +28,48 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private TokenAuthenticationService tokenAuthenticationService;
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.exceptionHandling().and()
-		.anonymous().and()
-		.servletApi().and()
-		.headers().cacheControl().and()
-		.authorizeRequests()
-		//allow anonymous POSTs to login
-		.antMatchers(HttpMethod.POST, "/api/login").permitAll()	
-		.antMatchers(HttpMethod.GET, "/test").permitAll()
-		.antMatchers(HttpMethod.GET, "/admin").hasRole("ADMIN")
-		//all other request need to be authenticated
-		.anyRequest().hasRole("USER").and()				
-		// custom JSON based authentication by POST of {"username":"<name>","password":"<password>"} which sets the token header upon authentication
-		.addFilterBefore(new StatelessLoginFilter("/api/login", tokenAuthenticationService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-		// custom Token based authentication based on the header previously given to the client
-		.addFilterBefore(new StatelessAuthenticationFilter(tokenAuthenticationService), UsernamePasswordAuthenticationFilter.class).csrf().disable();
-		
+		http.exceptionHandling()
+				.and()
+				.anonymous()
+				.and()
+				.servletApi()
+				.and()
+				.headers()
+				.cacheControl()
+				.and()
+				.authorizeRequests()
+				// allow anonymous POSTs to login
+				.antMatchers(HttpMethod.POST, "/api/login")
+				.permitAll()
+				.antMatchers(HttpMethod.GET, "/test")
+				.permitAll()
+				.antMatchers(HttpMethod.GET, "/admin")
+				.hasRole("ADMIN")
+				// all other request need to be authenticated
+				.anyRequest()
+				.hasRole("USER")
+				.and()
+				// custom JSON based authentication by POST of
+				// {"username":"<name>","password":"<password>"} which sets the
+				// token header upon authentication
+				.addFilterBefore(
+						new StatelessLoginFilter("/api/login",
+								tokenAuthenticationService, userDetailsService,
+								authenticationManager()),
+						UsernamePasswordAuthenticationFilter.class)
+				// custom Token based authentication based on the header
+				// previously given to the client
+				.addFilterBefore(
+						new StatelessAuthenticationFilter(
+								tokenAuthenticationService),
+						UsernamePasswordAuthenticationFilter.class).csrf()
+				.disable();
+
 	}
-	
+
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -52,7 +77,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(AuthenticationManagerBuilder auth)
+			throws Exception {
 		auth.userDetailsService(userDetailsService);
 	}
 

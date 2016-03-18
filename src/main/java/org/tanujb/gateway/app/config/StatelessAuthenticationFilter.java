@@ -14,7 +14,9 @@ import org.springframework.web.filter.GenericFilterBean;
 import org.tanujb.gateway.security.service.TokenAuthenticationService;
 
 /**
- * This filter is used for authentication of incoming request by checking presence of token in incoming request
+ * This filter is used for authentication of incoming request by checking
+ * presence of token in incoming request
+ * 
  * @author tbhakre
  *
  */
@@ -27,11 +29,14 @@ class StatelessAuthenticationFilter extends GenericFilterBean {
 	}
 
 	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException,
-			ServletException {
-		//Getting the authentication
-		Authentication authentication=tokenAuthenticationService.getAuthentication((HttpServletRequest) req);
+	public void doFilter(ServletRequest req, ServletResponse res,
+			FilterChain chain) throws IOException, ServletException {
+		
+		// Getting the authentication
+		Authentication authentication = tokenAuthenticationService
+				.getAuthentication((HttpServletRequest) req);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		chain.doFilter(req, res); // always continue
+		
 	}
 }
