@@ -12,7 +12,7 @@ Application manages user information in a state less manner without using sessio
 
 ## Motivation
 
-Motivation behind this project is to implement API Gateway pattern in a generic way so that it can be adopted to projects with minimal changes.
+Motivation behind this project is to implement API Gateway pattern in a generic way so that it can be adopted by projects with minimal changes.
 
 ## Installation
 
@@ -50,7 +50,7 @@ Resource     | Request Type  | Description
 /unauthorized| GET           | Does not require authentication.
 /user  		 | GET           | Requires User role.
 /admin       | GET           | Requires Admin role. 
-/api/login   | POST          | Expects user name and password for authentication 
+/api/login   | POST          | Expects user name and password for authentication. 
 
 
 
