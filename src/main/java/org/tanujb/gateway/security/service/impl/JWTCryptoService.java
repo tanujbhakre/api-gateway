@@ -38,7 +38,7 @@ public final class JWTCryptoService implements CryptoService {
 			// to whom the token is intended to be sent
 			claims.setAudience("Audience");
 			// time when the token will expire (10 minutes from now)
-			claims.setExpirationTimeMinutesInTheFuture(10);
+			claims.setExpirationTimeMinutesInTheFuture(24*60);
 			// a unique identifier for the token
 			claims.setGeneratedJwtId();
 			// when the token was issued/created (now)

@@ -38,13 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.servletApi()
 				.and()
 				.headers()
-				.cacheControl()
-				.and()
-				.authorizeRequests()
+				.cacheControl();
+				
+		http.authorizeRequests()
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login")
 				.permitAll()
-				.antMatchers(HttpMethod.GET, "/test")
+				.antMatchers(HttpMethod.GET, "/unauthorized")
 				.permitAll()
 				.antMatchers(HttpMethod.GET, "/admin")
 				.hasRole("ADMIN")
