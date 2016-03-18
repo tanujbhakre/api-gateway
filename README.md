@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-This application implements [API Gateway pattern](http://microservices.io/patterns/apigateway.html) for application development using [Microservices Architecture](http://microservices.io/patterns/microservices.html). 
+This application implements [API Gateway Pattern](http://microservices.io/patterns/apigateway.html) for application development using [Microservices Architecture](http://microservices.io/patterns/microservices.html). 
 
 Security is implemented with the help spring security. 
 
