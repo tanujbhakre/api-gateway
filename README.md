@@ -2,13 +2,13 @@
 
 ## Synopsis
 
-This application implements API Gateway pattern. 
+This application implements [API Gateway pattern](http://microservices.io/patterns/apigateway.html) for development using microservices. 
 
 Security is implemented with the help spring security. 
 
 Applications uses JWT to create token for authenticating and authorizing.
 
-Application manages user information in a state less manner without using sessions.
+Application manages user information in a stateless manner without using sessions.
 
 ## Motivation
 
