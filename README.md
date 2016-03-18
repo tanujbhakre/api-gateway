@@ -1,4 +1,4 @@
-# api-gateway
+# API Gateway
 
 ## Synopsis
 
@@ -37,7 +37,7 @@ For authentication use **/api/login** with **POST** request with body:
 
 ## Token
 
-If the user is authenticated in the response token is attached to header key **X-AUTH-TOKEN**.
+If the user is authenticated a response token is attached to header key **X-AUTH-TOKEN**.
 
 For subsequent requests token is expected as part of header with header key as **X-AUTH-TOKEN**.
 
@@ -50,7 +50,7 @@ Resource     | Request Type  | Description
 /unauthorized| GET           | Does not require authentication.
 /user  		 | GET           | Requires User role.
 /admin       | GET           | Requires Admin role. 
-/api/login   | POST          | Expects username and password for authentication 
+/api/login   | POST          | Expects user name and password for authentication 
 
 
 
