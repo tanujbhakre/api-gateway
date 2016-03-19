@@ -41,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.cacheControl();
 				
 		http.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/unauthorized")
+				.permitAll()
 				// allow anonymous POSTs to login
 				.antMatchers(HttpMethod.POST, "/api/login")
-				.permitAll()
-				.antMatchers(HttpMethod.GET, "/unauthorized")
 				.permitAll()
 				.antMatchers(HttpMethod.GET, "/admin")
 				.hasRole("ADMIN")

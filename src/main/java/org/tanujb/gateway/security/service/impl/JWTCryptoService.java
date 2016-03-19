@@ -1,6 +1,7 @@
 package org.tanujb.gateway.security.service.impl;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 
 import org.jose4j.jws.AlgorithmIdentifiers;
@@ -12,20 +13,42 @@ import org.jose4j.jwt.consumer.JwtConsumer;
 import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 import org.jose4j.keys.HmacKey;
 import org.jose4j.lang.JoseException;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.stereotype.Service;
 import org.tanujb.gateway.security.service.CryptoService;
 import org.tanujb.gateway.security.vo.User;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public final class JWTCryptoService implements CryptoService {
+@Service
+@Configuration
+@PropertySources({
+    @PropertySource("classpath:application/token.properties"),
+    @PropertySource("classpath:environment/token-secret.properties")
+})
+public class JWTCryptoService implements CryptoService {
 
 	private static final String USER_KEY = "USER";
-	private final byte[] secret;
 
-	JWTCryptoService(byte[] secret) {
-		this.secret = secret;
-	}
+	@Value("${token.issuer}")
+	private String issuer;
+	
+	@Value("${token.audience}")
+	private String audience;
+	
+	@Value("${token.subject}")
+	private String subject;
+	
+	@Value("${token.secret}")
+	private String secret;
+	
+	@Value("${token.expiration}")
+	private Integer tokenExpiration;
+
 
 	@Override
 	public String createTokenForUser(User user) {
@@ -34,19 +57,19 @@ public final class JWTCryptoService implements CryptoService {
 			// Create the Claims, which will be the content of the JWT
 			JwtClaims claims = new JwtClaims();
 			// who creates the token and signs it
-			claims.setIssuer("Issuer");
+			claims.setIssuer(issuer);
 			// to whom the token is intended to be sent
-			claims.setAudience("Audience");
-			// time when the token will expire (10 minutes from now)
-			claims.setExpirationTimeMinutesInTheFuture(24*60);
+			claims.setAudience(audience);
+			// time when the token will expire 
+			claims.setExpirationTimeMinutesInTheFuture(tokenExpiration);
 			// a unique identifier for the token
 			claims.setGeneratedJwtId();
 			// when the token was issued/created (now)
 			claims.setIssuedAtToNow();
-			// time before which the token is not yet valid (2 minutes ago)
-			claims.setNotBeforeMinutesInThePast(2);
+			// time before which the token is not yet valid
+			claims.setNotBeforeMinutesInThePast(1);
 			// the subject/principal is whom the token is about
-			claims.setSubject("subject");
+			claims.setSubject(subject);
 			// additional claims/attributes about the subject can be added
 			claims.setClaim(USER_KEY, toJSON(user));
 			// A JWT is a JWS and/or a JWE with JSON claims as the payload.
@@ -54,7 +77,7 @@ public final class JWTCryptoService implements CryptoService {
 			// The payload of the JWS is JSON content of the JWT Claims
 			jws.setPayload(claims.toJson());
 
-			Key key = new HmacKey(secret);
+			Key key = new HmacKey(secret.getBytes(StandardCharsets.UTF_8));
 			// The JWT is signed using the private key
 			jws.setKey(key);
 			// Set the signature algorithm on the JWT/JWS that will integrity
@@ -81,11 +104,11 @@ public final class JWTCryptoService implements CryptoService {
 					// the JWT must have a subject claim
 					.setRequireSubject()
 					// whom the JWT needs to have been issued by
-					.setExpectedIssuer("Issuer")
+					.setExpectedIssuer(issuer)
 					// to whom the JWT is intended for
-					.setExpectedAudience("Audience")
+					.setExpectedAudience(audience)
 					// verify the signature with the public key
-					.setVerificationKey(new HmacKey(secret))
+					.setVerificationKey(new HmacKey(secret.getBytes(StandardCharsets.UTF_8)))
 					// create the JwtConsumer instance
 					.build();
 
@@ -94,9 +117,9 @@ public final class JWTCryptoService implements CryptoService {
 			String userJSON=jwtClaims.getClaimValue(USER_KEY, String.class);
 			user = fromJSON(userJSON);
 		} catch (InvalidJwtException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} catch (MalformedClaimException e) {
-			throw new RuntimeException(e);
+			//throw new RuntimeException(e);
 		} 
 		return user;
 	}

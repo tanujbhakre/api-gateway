@@ -13,6 +13,9 @@ import org.tanujb.gateway.service.UserService;
 @Service
 public class DummyUserService implements UserService {
 
+	private static final long TEN_DAYS = 1000 * 60 * 60 * 24 * 10;
+	
+	
 	@Override
 	public User findByUsername(String username) {
 		User user = null;
@@ -20,7 +23,7 @@ public class DummyUserService implements UserService {
 			user = new User();
 			user.setUsername("user");
 			user.setPassword("123456");
-			user.setExpires(Calendar.getInstance().getTimeInMillis() + 10000);
+			user.setExpires(Calendar.getInstance().getTimeInMillis() + TEN_DAYS);
 			UserAuthority u1 = new UserAuthority(UserRole.USER.getRoleName());
 			Set<UserAuthority> authorities = new HashSet<UserAuthority>();
 			authorities.add(u1);
@@ -29,7 +32,7 @@ public class DummyUserService implements UserService {
 			user = new User();
 			user.setUsername("admin");
 			user.setPassword("123456");
-			user.setExpires(Calendar.getInstance().getTimeInMillis() + 10000);
+			user.setExpires(Calendar.getInstance().getTimeInMillis() + TEN_DAYS);
 			UserAuthority u1 = new UserAuthority(UserRole.USER.getRoleName());
 			UserAuthority u2 = new UserAuthority(UserRole.ADMIN.getRoleName());
 			Set<UserAuthority> authorities = new HashSet<UserAuthority>();
