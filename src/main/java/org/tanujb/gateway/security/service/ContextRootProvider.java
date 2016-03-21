@@ -1,4 +1,4 @@
-package org.tanujb.gateway.service;
+package org.tanujb.gateway.security.service;
 
 public interface ContextRootProvider {
 	
