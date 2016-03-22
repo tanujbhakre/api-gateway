@@ -17,31 +17,35 @@ import org.tanujb.gateway.security.vo.DelegationRequest;
 import org.tanujb.gateway.security.vo.DelegationResponse;
 import org.tanujb.gateway.util.GatewayUtil;
 
+/**
+ * Gateway controller
+ * 
+ * @author tbhakre
+ *
+ */
 @RestController
 public class GatewayController {
 
 	@Autowired
 	private DelegationService service;
 
-	@RequestMapping(value = "/**", method = { RequestMethod.GET,
-			RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE,
-			RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.PATCH,
-			RequestMethod.TRACE })
-	public void processRequest(HttpServletRequest httpRequest,
-			HttpServletResponse httpResponse) {
+	/**
+	 * This method handles all the incoming request and passes the request
+	 * details to delegation service
+	 */
+	@RequestMapping(value = "/**", method = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT,
+			RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.TRACE })
+	public void processRequest(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 
-		DelegationRequest request = new DelegationRequest(
-				httpRequest.getMethod(), GatewayUtil.getURL(httpRequest),
-				GatewayUtil.getPlaceHolderDetails(httpRequest),
-				GatewayUtil.getHeadersInfo(httpRequest),
+		DelegationRequest request = new DelegationRequest(httpRequest.getMethod(), GatewayUtil.getURL(httpRequest),
+				GatewayUtil.getPlaceHolderDetails(httpRequest), GatewayUtil.getHeadersInfo(httpRequest),
 				GatewayUtil.getRequestBody(httpRequest));
 
 		DelegationResponse response = service.processRequest(request);
 		// Setting response status
 		httpResponse.setStatus(response.getStatus());
 		// Setting response header
-		for (Map.Entry<String, String> entry : response.getResponseHeader()
-				.entrySet()) {
+		for (Map.Entry<String, String> entry : response.getResponseHeader().entrySet()) {
 			httpResponse.setHeader(entry.getKey(), entry.getValue());
 		}
 		// Setting response body
@@ -52,8 +56,7 @@ public class GatewayController {
 				out.write(responseBytes);
 				out.close();
 			} catch (IOException e) {
-				throw new ApplicationRuntimeException(
-						"Exception occured while writing response", e);
+				throw new ApplicationRuntimeException("Exception occured while writing response", e);
 			}
 		}
 	}

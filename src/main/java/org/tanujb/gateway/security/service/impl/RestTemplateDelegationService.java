@@ -45,25 +45,29 @@ public class RestTemplateDelegationService implements DelegationService {
 		String context = contextRootProvider.getContextRoot(path);
 		String url = context + path;
 		System.out.println("url=" + url);
-		DelegationResponse restResponse = new RestTemplate().execute(url,
-				HttpMethod.valueOf(request.getMethod()), requestCallback,
-				responseExtractor, request.getPlaceHolders());
+		DelegationResponse restResponse = new RestTemplate().execute(url, HttpMethod.valueOf(request.getMethod()),
+				requestCallback, responseExtractor, request.getPlaceHolders());
 
 		return restResponse;
 	}
 
+	/**
+	 * Prepares callback for the delegation request
+	 * 
+	 * @param request
+	 *            Request details for delegation
+	 * @return Request callback
+	 */
 	private RequestCallback getRequestCallback(DelegationRequest request) {
 
 		final DelegationRequest delegationRequest = request;
 
 		return new RequestCallback() {
 			@Override
-			public void doWithRequest(ClientHttpRequest clientRequest)
-					throws IOException {
+			public void doWithRequest(ClientHttpRequest clientRequest) throws IOException {
 				// Setting header
 				HttpHeaders requestHeader = clientRequest.getHeaders();
-				for (Map.Entry<String, String> entry : delegationRequest
-						.getHeaders().entrySet()) {
+				for (Map.Entry<String, String> entry : delegationRequest.getHeaders().entrySet()) {
 
 					requestHeader.add(entry.getKey(), entry.getValue());
 				}
@@ -73,20 +77,24 @@ public class RestTemplateDelegationService implements DelegationService {
 					try {
 						clientRequest.getBody().write(requestBody.getBytes());
 					} catch (IOException e) {
-						throw new ApplicationRuntimeException(
-								"Error occured while writing request body.", e);
+						throw new ApplicationRuntimeException("Error occured while writing request body.", e);
 					}
 				}
 			}
 		};
 	}
 
+	/**
+	 * This method prepares the response extractor which extracts data from the
+	 * Rest call response
+	 * 
+	 * @return Response extractor
+	 */
 	private ResponseExtractor<DelegationResponse> getResponseExtractor() {
 
 		return new ResponseExtractor<DelegationResponse>() {
 			@Override
-			public DelegationResponse extractData(
-					ClientHttpResponse clientResponse) throws IOException {
+			public DelegationResponse extractData(ClientHttpResponse clientResponse) throws IOException {
 				DelegationResponse delegationResponse = null;
 
 				Integer responseStaus = null;
@@ -95,18 +103,15 @@ public class RestTemplateDelegationService implements DelegationService {
 
 				try {
 					responseStaus = clientResponse.getRawStatusCode();
-					responseHeader = GatewayUtil.getHeadersInfo(clientResponse,
-							headerSkipList);
+					responseHeader = GatewayUtil.getHeadersInfo(clientResponse, headerSkipList);
 					// Getting response body
 					InputStream ioStream = clientResponse.getBody();
 					if (ioStream != null) {
 						responseByteArray = IOUtils.toByteArray(ioStream);
 					}
-					delegationResponse = new DelegationResponse(responseStaus,
-							responseHeader, responseByteArray);
+					delegationResponse = new DelegationResponse(responseStaus, responseHeader, responseByteArray);
 				} catch (IOException e) {
-					throw new ApplicationRuntimeException(
-							"Error occured while reading response body.", e);
+					throw new ApplicationRuntimeException("Error occured while reading response body.", e);
 				}
 				return delegationResponse;
 			}
