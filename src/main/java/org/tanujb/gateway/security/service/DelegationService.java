@@ -1,13 +1,23 @@
 package org.tanujb.gateway.security.service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.tanujb.gateway.security.vo.DelegationRequest;
 import org.tanujb.gateway.security.vo.DelegationResponse;
 
+/**
+ * Service for delegating the requests
+ * 
+ * @author tbhakre
+ *
+ */
 public interface DelegationService {
 
-	DelegationResponse processRequest(HttpServletRequest request,
-			HttpServletResponse response);
+	/**
+	 * This method delegates the incoming request to correct micro service
+	 * 
+	 * @param request
+	 *            Request details for delegation
+	 * @return Response after delegation
+	 */
+	DelegationResponse processRequest(DelegationRequest request);
 
 }

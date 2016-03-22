@@ -6,9 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import org.tanujb.gateway.security.exception.ApplicationRuntimeException;
 import org.tanujb.gateway.security.service.ContextRootProvider;
 import org.tanujb.gateway.security.service.DelegationService;
+import org.tanujb.gateway.security.vo.DelegationRequest;
 import org.tanujb.gateway.security.vo.DelegationResponse;
 import org.tanujb.gateway.util.GatewayUtil;
 
@@ -40,23 +38,22 @@ public class RestTemplateDelegationService implements DelegationService {
 	private ContextRootProvider contextRootProvider;
 
 	@Override
-	public DelegationResponse processRequest(HttpServletRequest request,
-			HttpServletResponse response) {
+	public DelegationResponse processRequest(DelegationRequest request) {
 		RequestCallback requestCallback = getRequestCallback(request);
 		ResponseExtractor<DelegationResponse> responseExtractor = getResponseExtractor();
-		String path = GatewayUtil.getURL(request);
+		String path = request.getUrl();
 		String context = contextRootProvider.getContextRoot(path);
 		String url = context + path;
 		DelegationResponse restResponse = new RestTemplate().execute(url,
 				HttpMethod.valueOf(request.getMethod()), requestCallback,
-				responseExtractor, GatewayUtil.getPlaceHolderDetails(request));
+				responseExtractor, request.getPlaceHolders());
 
 		return restResponse;
 	}
 
-	private RequestCallback getRequestCallback(HttpServletRequest request) {
+	private RequestCallback getRequestCallback(DelegationRequest request) {
 
-		final HttpServletRequest httpRequest = request;
+		final DelegationRequest delegationRequest = request;
 
 		return new RequestCallback() {
 			@Override
@@ -64,13 +61,13 @@ public class RestTemplateDelegationService implements DelegationService {
 					throws IOException {
 				// Setting header
 				HttpHeaders requestHeader = clientRequest.getHeaders();
-				for (Map.Entry<String, String> entry : GatewayUtil
-						.getHeadersInfo(httpRequest).entrySet()) {
+				for (Map.Entry<String, String> entry : delegationRequest
+						.getHeaders().entrySet()) {
 
 					requestHeader.add(entry.getKey(), entry.getValue());
 				}
 				// Setting request Body
-				String requestBody = GatewayUtil.getRequestBody(httpRequest);
+				String requestBody = delegationRequest.getBody();
 				if (requestBody != null) {
 					try {
 						clientRequest.getBody().write(requestBody.getBytes());

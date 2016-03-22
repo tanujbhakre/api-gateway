@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.tanujb.gateway.security.exception.ApplicationRuntimeException;
 import org.tanujb.gateway.security.service.DelegationService;
+import org.tanujb.gateway.security.vo.DelegationRequest;
 import org.tanujb.gateway.security.vo.DelegationResponse;
+import org.tanujb.gateway.util.GatewayUtil;
 
 @RestController
 public class GatewayController {
@@ -28,8 +30,13 @@ public class GatewayController {
 	public void processRequest(HttpServletRequest httpRequest,
 			HttpServletResponse httpResponse) {
 
-		DelegationResponse response = service.processRequest(httpRequest,
-				httpResponse);
+		DelegationRequest request = new DelegationRequest(
+				httpRequest.getMethod(), GatewayUtil.getURL(httpRequest),
+				GatewayUtil.getHeadersInfo(httpRequest),
+				GatewayUtil.getPlaceHolderDetails(httpRequest),
+				GatewayUtil.getRequestBody(httpRequest));
+
+		DelegationResponse response = service.processRequest(request);
 		// Setting response status
 		httpResponse.setStatus(response.getStatus());
 		// Setting response header
