@@ -10,6 +10,8 @@ public class DummyContextRootProvider implements ContextRootProvider {
 	public String getContextRoot(String url) {
 		if (url.contains("api/datastore")) {
 			return "https://data.gov.in";
+		} else if (url.contains("dia/") || url.contains("healthcheck")) {
+			return "http://localhost:8666/dia-mockws-war";
 		}
 		return "https://data.gov.in";
 	}

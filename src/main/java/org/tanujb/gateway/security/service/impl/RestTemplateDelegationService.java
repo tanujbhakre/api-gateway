@@ -44,6 +44,7 @@ public class RestTemplateDelegationService implements DelegationService {
 		String path = request.getUrl();
 		String context = contextRootProvider.getContextRoot(path);
 		String url = context + path;
+		System.out.println("url=" + url);
 		DelegationResponse restResponse = new RestTemplate().execute(url,
 				HttpMethod.valueOf(request.getMethod()), requestCallback,
 				responseExtractor, request.getPlaceHolders());

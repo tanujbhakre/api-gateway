@@ -32,8 +32,8 @@ public class GatewayController {
 
 		DelegationRequest request = new DelegationRequest(
 				httpRequest.getMethod(), GatewayUtil.getURL(httpRequest),
-				GatewayUtil.getHeadersInfo(httpRequest),
 				GatewayUtil.getPlaceHolderDetails(httpRequest),
+				GatewayUtil.getHeadersInfo(httpRequest),
 				GatewayUtil.getRequestBody(httpRequest));
 
 		DelegationResponse response = service.processRequest(request);
