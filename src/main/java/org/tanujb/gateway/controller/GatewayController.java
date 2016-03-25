@@ -11,11 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.tanujb.gateway.security.exception.ApplicationRuntimeException;
-import org.tanujb.gateway.security.service.DelegationService;
-import org.tanujb.gateway.security.vo.DelegationRequest;
-import org.tanujb.gateway.security.vo.DelegationResponse;
-import org.tanujb.gateway.util.GatewayUtil;
+import org.tanujb.gateway.exception.ApplicationRuntimeException;
+import org.tanujb.gateway.service.DelegationService;
+import org.tanujb.gateway.util.ServletUtil;
+import org.tanujb.gateway.vo.DelegationRequest;
+import org.tanujb.gateway.vo.DelegationResponse;
 
 /**
  * Gateway controller
@@ -37,9 +37,9 @@ public class GatewayController {
 			RequestMethod.DELETE, RequestMethod.HEAD, RequestMethod.OPTIONS, RequestMethod.PATCH, RequestMethod.TRACE })
 	public void processRequest(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
 
-		DelegationRequest request = new DelegationRequest(httpRequest.getMethod(), GatewayUtil.getURL(httpRequest),
-				GatewayUtil.getPlaceHolderDetails(httpRequest), GatewayUtil.getHeadersInfo(httpRequest),
-				GatewayUtil.getRequestBody(httpRequest));
+		DelegationRequest request = new DelegationRequest(httpRequest.getMethod(), ServletUtil.getURL(httpRequest),
+				ServletUtil.getPlaceHolderDetails(httpRequest), ServletUtil.getHeadersInfo(httpRequest),
+				ServletUtil.getRequestBody(httpRequest));
 
 		DelegationResponse response = service.processRequest(request);
 		// Setting response status
