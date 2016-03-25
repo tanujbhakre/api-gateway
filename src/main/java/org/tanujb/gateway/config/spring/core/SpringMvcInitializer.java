@@ -1,7 +1,7 @@
-package org.tanujb.gateway.config.core;
+package org.tanujb.gateway.config.spring.core;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-import org.tanujb.gateway.config.AppConfig;
+import org.tanujb.gateway.config.spring.AppConfig;
 
 /**
  * Configures Despatcher servlet

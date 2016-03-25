@@ -1,4 +1,4 @@
-package org.tanujb.gateway.config;
+package org.tanujb.gateway.config.spring;
 
 import java.io.IOException;
 

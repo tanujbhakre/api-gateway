@@ -29,6 +29,7 @@ public class GatewayExceptionHandler {
 	@ResponseBody
 	public String httpExceptionHandler(HttpServletResponse response,
 			HttpClientErrorException ex) {
+		ex.printStackTrace();
 		response.setStatus(ex.getStatusCode().value());
 		return ex.getResponseBodyAsString();
 	}
@@ -44,7 +45,7 @@ public class GatewayExceptionHandler {
 	@ResponseBody
 	public String applicationExceptionHandler(HttpServletResponse response,
 			ApplicationRuntimeException ex) {
-
+		ex.printStackTrace();
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return ex.getMessage();
 	}

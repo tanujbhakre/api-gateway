@@ -1,4 +1,4 @@
-package org.tanujb.gateway.config.core;
+package org.tanujb.gateway.config.spring.core;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 

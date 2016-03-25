@@ -1,4 +1,4 @@
-package org.tanujb.gateway.config;
+package org.tanujb.gateway.config.spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

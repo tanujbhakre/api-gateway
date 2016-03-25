@@ -1,9 +1,7 @@
 package org.tanujb.gateway.service.impl;
 
-import org.springframework.stereotype.Service;
 import org.tanujb.gateway.service.ContextRootProvider;
 
-@Service
 public class DummyContextRootProvider implements ContextRootProvider {
 
 	@Override
