@@ -1,5 +1,7 @@
 package org.tanujb.gateway.handler;
 
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.HttpClientErrorException;
 import org.tanujb.gateway.exception.ApplicationRuntimeException;
+import org.tanujb.gateway.exception.ContextNotFoundException;
 
 /**
  * Controller advice for handling exceptions
@@ -49,4 +52,21 @@ public class GatewayExceptionHandler {
 		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		return ex.getMessage();
 	}
+
+	/**
+	 * Capturing context not found exception and responding with error
+	 * 
+	 * @param response
+	 * @param ex
+	 * @return
+	 * @throws IOException
+	 */
+	@ExceptionHandler(ContextNotFoundException.class)
+	@ResponseBody
+	public void contextNotFoundExceptionHandler(HttpServletResponse response,
+			ContextNotFoundException ex) throws IOException {
+		ex.printStackTrace();
+		response.sendError(HttpStatus.NOT_FOUND.value());
+	}
+
 }

@@ -1,4 +1,10 @@
-[{
-	"patterns":["dia/","dia/pickup"],
-	"context":"http://localhost:8666/dia-mockws-war"
-}]
+[
+	{
+		"patterns":["/dia/.*","/dia/pickup/.*"],
+		"context":"http://localhost:8666/dia-mockws-war"
+	},
+	{
+		"patterns":["/api/datastore/.*"],
+		"context":"https://data.gov.in"
+	}
+]
