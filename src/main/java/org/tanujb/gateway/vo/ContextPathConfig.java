@@ -1,7 +1,13 @@
-package org.tanujb.gateway.config.spring;
+package org.tanujb.gateway.vo;
 
 import java.util.Set;
 
+/**
+ * This class represents the configuration for context path
+ * 
+ * @author tbhakre
+ *
+ */
 public class ContextPathConfig {
 
 	private Set<String> patterns;

@@ -5,11 +5,11 @@ import java.util.Set;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.tanujb.gateway.config.spring.ContextPathConfig;
 import org.tanujb.gateway.exception.ApplicationRuntimeException;
 import org.tanujb.gateway.exception.ContextNotFoundException;
 import org.tanujb.gateway.service.ContextRootProvider;
 import org.tanujb.gateway.util.GatewayUtil;
+import org.tanujb.gateway.vo.ContextPathConfig;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
