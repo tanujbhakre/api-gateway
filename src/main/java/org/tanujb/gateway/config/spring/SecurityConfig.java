@@ -23,6 +23,8 @@ import org.tanujb.gateway.service.impl.UserDetailsService;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	private static final String LOG_IN_URL = "/api/login";
+
 	@Autowired
 	private UserDetailsService userDetailsService;
 
@@ -31,20 +33,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.exceptionHandling()
-				.and()
-				.anonymous()
-				.and()
-				.servletApi()
-				.and()
-				.headers()
-				.cacheControl();
-				
+		http.exceptionHandling().and().anonymous().and().servletApi().and()
+				.headers().cacheControl();
+
 		http.authorizeRequests()
 				.antMatchers(HttpMethod.GET, "/unauthorized")
 				.permitAll()
 				// allow anonymous POSTs to login
-				.antMatchers(HttpMethod.POST, "/api/login")
+				.antMatchers(HttpMethod.POST, LOG_IN_URL)
 				.permitAll()
 				.antMatchers(HttpMethod.GET, "/admin")
 				.hasRole("ADMIN")
@@ -56,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// {"username":"<name>","password":"<password>"} which sets the
 				// token header upon authentication
 				.addFilterBefore(
-						new StatelessLoginFilter("/api/login",
+						new StatelessLoginFilter(LOG_IN_URL,
 								tokenAuthenticationService, userDetailsService,
 								authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
