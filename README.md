@@ -54,5 +54,4 @@ Resource     | Request Type  | Description
 
 
 
-
-
+Checkout [API Gateway Wiki](https://github.com/tanujbhakre/api-gateway/wiki) for more details.
